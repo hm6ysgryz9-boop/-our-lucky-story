@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>我們是如此幸運 | 專屬於我們的故事</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fcf9f5;
+            --card-bg: #ffffff;
+            --text-main: #4a403a;
+            --text-light: #8c7a6b;
+            --accent: #d4a373;
+            --accent-hover: #bc6c25;
+            --pink-soft: #f4eee1;
+            --shadow: 0 10px 30px rgba(74, 64, 58, 0.08);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Noto Serif TC', 'Quicksand', sans-serif; line-height: 1.8; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        .music-bar { position: fixed; top: 15px; right: 15px; z-index: 1000; background: var(--card-bg); padding: 6px 14px; border-radius: 30px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; border: 1px solid #ebd9c5; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        header { text-align: center; padding: 50px 0 30px; }
+        header h1 { font-size: 2.2rem; font-weight: 700; letter-spacing: 2px; margin-bottom: 12px; color: #3b302a; }
+        header p { font-size: 1rem; color: var(--text-light); letter-spacing: 1px; }
+        .divider { width: 50px; height: 2px; background-color: var(--accent); margin: 25px auto; }
+        .timeline-section { margin: 40px 0; }
+        .section-title { text-align: center; font-size: 1.6rem; margin-bottom: 30px; color: #3b302a; }
+        .memory-card { background: var(--card-bg); border-radius: 16px; padding: 25px; margin-bottom: 25px; box-shadow: var(--shadow); border: 1px solid #f2ebd9; }
+        .memory-date { font-size: 0.85rem; color: var(--accent); font-weight: 600; letter-spacing: 1px; display: block; margin-bottom: 8px; }
+        .memory-content h3 { font-size: 1.3rem; margin-bottom: 8px; color: #3b302a; }
+        .memory-content p { color: var(--text-light); font-size: 0.95rem; }
+        .quote-box { background: var(--pink-soft); border-radius: 16px; padding: 35px 25px; text-align: center; margin: 40px 0; box-shadow: var(--shadow); }
+        .quote-box p { font-size: 1.1rem; font-style: italic; margin-bottom: 12px; color: #5c4d43; }
+        .quote-box span { font-size: 0.85rem; color: var(--accent-hover); font-weight: 600; }
+        .interactive-section { background: var(--card-bg); border-radius: 16px; padding: 35px 25px; margin: 40px 0; box-shadow: var(--shadow); text-align: center; border: 1px solid #f2ebd9; }
+        .interactive-section h3 { margin-bottom: 10px; font-size: 1.4rem; }
+        .interactive-section > p { color: var(--text-light); font-size: 0.95rem; margin-bottom: 15px; }
+        .btn-group { display: flex; justify-content: center; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+        .custom-btn { background-color: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 30px; font-size: 0.95rem; cursor: pointer; font-family: inherit; }
+        #feedback-text { margin-top: 15px; font-size: 1rem; color: var(--accent-hover); font-weight: 600; min-height: 24px; }
+        .confession-section { text-align: center; padding: 40px 0 60px; }
+        .confession-box { background: linear-gradient(135deg, #fdfbf7 0%, #f4eee1 100%); border-radius: 20px; padding: 40px 20px; box-shadow: var(--shadow); border: 2px solid var(--accent); }
+        .confession-box h2 { font-size: 1.8rem; margin-bottom: 15px; color: #3b302a; }
+        .confession-box p { font-size: 1rem; color: var(--text-light); margin-bottom: 25px; line-height: 1.8; }
+        .love-btn { background-color: #bc6c25; color: white; border: none; padding: 14px 35px; font-size: 1.1rem; border-radius: 40px; cursor: pointer; box-shadow: 0 5px 15px rgba(188, 108, 37, 0.3); font-family: inherit; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: var(--card-bg); padding: 30px 20px; border-radius: 20px; text-align: center; max-width: 400px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .modal-content h2 { margin-bottom: 12px; color: #bc6c25; font-size: 1.5rem; }
+        .modal-content p { margin-bottom: 20px; color: var(--text-main); font-size: 0.95rem; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <div class="music-bar" onclick="toggleMusic()">
+        <span id="music-icon">🎵</span>
+        <span id="music-text">點擊播放音樂</span>
+    </div>
+    <audio id="bgm" loop playsinline>
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf7f6.mp3?filename=gentle-romantic-piano-110845.mp3" type="audio/mpeg">
+    </audio>
+    <div class="container">
+        <header>
+            <h1>我們是如此幸運</h1>
+            <p>From 網軍網友 to 彼此生命中最柔軟的風景</p>
+            <div class="divider"></div>
+        </header>
+        <section class="timeline-section">
+            <h2 class="section-title">✨ 我們珍貴的精心時刻 ✨</h2>
+            <div class="memory-card">
+                <span class="memory-date">2026年3月 · 初相遇</span>
+                <div class="memory-content">
+                    <h3>「嗨，可以看眼袋了嗎？」</h3>
+                    <p>從通訊軟體上一句幽默的搭話開始。雖然當時正忙著割眼袋、說要刪軟體，卻也意外開啟了長達好幾個月、妙語如珠的命定緣分。</p>
+                </div>
+            </div>
+            <div class="memory-card">
+                <span class="memory-date">2026年中秋前後 · 網友升級</span>
+                <div class="memory-content">
+                    <h3>「醜男跟醜男可以一起出去？」</h3>
+                    <p>歷經半年的沉寂再次搭上線，互傳醜照、鬥嘴比拼，從深夜約會到路口道別。你的出現，悄悄治癒了所有低落的瞬間。</p>
+                </div>
+            </div>
+            <div class="memory-card">
+                <span class="memory-date">2026年9月 · 溫馨與驚喜</span>
+                <div class="memory-content">
+                    <h3>「簡單李的柚子金萱與深夜地瓜球」</h3>
+                    <p>一起去看舞台劇、吃令人驚豔的甜點、在深夜騎車送餅乾。每一次突如其來的深夜按門鈴與溫暖擁抱，都在心裡激起了最溫柔的漣漪。</p>
+                </div>
+            </div>
+            <div class="memory-card">
+                <span class="memory-date">2026年10月 · 雙人心跳</span>
+                <div class="memory-content">
+                    <h3>「當我們越走越近……」</h3>
+                    <p>投影幕前依偎著看電影、手寫卡片的溫度，還是那句「遇到你真的如此幸運」。不用刻意找話題，只要待在你身邊，連呼吸都是最安心的節奏。</p>
+                </div>
+            </div>
+        </section>
+        <div class="quote-box">
+            <p id="quote-display">「遇到你真的如此幸運，不用擔心自己不夠好，我喜歡你，就會喜歡你的全部。」</p>
+            <span id="quote-author">—— 屬於我們的日常對話</span>
+        </div>
+        <section class="interactive-section">
+            <h3>測驗看看：今天的心情指數是？</h3>
+            <p>點擊下方按鈕，看看我們之間的默契有多高！</p>
+            <div class="btn-group">
+                <button class="custom-btn" onclick="showFeedback(1)">今天也超級想你！</button>
+                <button class="custom-btn" onclick="showFeedback(2)">想當你的專屬無尾熊</button>
+                <button class="custom-btn" onclick="showFeedback(3)">想吃甜點跟抱抱</button>
+            </div>
+            <div id="feedback-text"></div>
+        </section>
+        <section class="confession-section">
+            <div class="confession-box">
+                <h2>致我最愛的你</h2>
+                <p>從沒想過生命中會出現這樣一個人：不需要費力維持形象、不需要刻意找尋話題，只要一個擁抱，就能充滿所有的電。謝謝你成為我的浮木，成為日常裡最閃耀的光。<br><br><strong>我們是如此幸運，能夠遇見彼此。</strong></p>
+                <button class="love-btn" onclick="openModal()">我願意！ ❤️</button>
+            </div>
+        </section>
+    </div>
+    <div class="modal" id="loveModal">
+        <div class="modal-content">
+            <h2>🎉 幸運解鎖成功！</h2>
+            <p>恭喜獲得永久有效的專屬陪伴券！<br>接下來的日子，讓我們繼續一起探索世界、吃遍所有好吃的甜點，過著幸福的每一天吧！ 🐱🖤</p>
+            <button class="custom-btn" onclick="closeModal()">太棒了，緊緊抱住！</button>
+        </div>
+    </div>
+    <script>
+        let isPlaying = false;
+        const bgm = document.getElementById('bgm');
+        const musicIcon = document.getElementById('music-icon');
+        const musicText = document.getElementById('music-text');
+        function toggleMusic() {
+            if (!isPlaying) {
+                bgm.play().then(() => {
+                    musicIcon.textContent = "⏸";
+                    musicText.textContent = "音樂播放中";
+                    isPlaying = true;
+                }).catch(e => { console.log("播放失敗", e); });
+            } else {
+                bgm.pause();
+                musicIcon.textContent = "🎵";
+                musicText.textContent = "點擊播放音樂";
+                isPlaying = false;
+            }
+        }
+        const quotes = [
+            { text: "「遇到你真的如此幸運，不用擔心自己不夠好，我喜歡你，就會喜歡你的全部。」", author: "—— 我們的日常默契" },
+            { text: "「跟你在一起，不用硬要想什麼話題，一切都好自在。」", author: "—— 最舒服的相處" },
+            { text: "「本來想說要單身兩三年，原來是要找到懂得欣賞的人，才知道自己其實很棒。」", author: "—— 雙子座的真心告白" },
+            { text: "「我希望你清楚知道，你不是單向的，我也好想你。」", author: "—— 雙向奔赴的幸福" }
+        ];
+        let currentQuote = 0;
+        setInterval(() => {
+            currentQuote = (currentQuote + 1) % quotes.length;
+            document.getElementById('quote-display').textContent = quotes[currentQuote].text;
+            document.getElementById('quote-author').textContent = quotes[currentQuote].author;
+        }, 5000);
+        function showFeedback(type) {
+            const feedback = document.getElementById('feedback-text');
+            if (type === 1) { feedback.textContent = "💖 答對了！系統偵測到你今天對我的想念值已達 100 分！"; }
+            else if (type === 2) { feedback.textContent = "🐨 獲得成就：隨時隨地準備好被你大力抱緊處理！"; }
+            else if (type === 3) { feedback.textContent = "🍰 走吧！馬卡龍跟溫暖擁抱已經全部準備好囉！"; }
+        }
+        function openModal() { document.getElementById('loveModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('loveModal').style.display = 'none'; }
+    </script>
+</body>
+</html>
